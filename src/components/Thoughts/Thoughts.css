@@ -1,0 +1,37 @@
+:root {
+    --border-color: gray;
+}
+
+.thoughts-form {
+    margin-top: 10vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.thoughts-list > .thought {
+    margin: 1rem 0 1rem 0;
+}
+
+.thoughts-form > .thoughts-inputs {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+}
+
+.thoughts-form > .thoughts-inputs > input {
+    padding: 1rem;
+    width: 100%;
+    border: 2px solid var(--border-color);
+    border-radius: 0.25rem;
+    font-size: 14pt;
+}
+
+.thoughts-form > .thoughts-inputs > button {
+    padding: 0 2rem 0 2rem;
+    border: 2px solid var(--border-color);
+    border-radius: 0.25rem;
+    background-color: #71e3f0;
+    font-size: 16pt;
+    cursor: pointer;
+}
