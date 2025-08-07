@@ -25,6 +25,11 @@
     border: 2px solid var(--border-color);
     border-radius: 0.25rem;
     font-size: 14pt;
+    transition: 0.2s;
+}
+
+.thoughts > .thoughts-form > .thoughts-inputs > input:hover {
+    border: 2px solid black;
 }
 
 .thoughts-form > .thoughts-inputs > button {
@@ -34,4 +39,9 @@
     background-color: #71e3f0;
     font-size: 16pt;
     cursor: pointer;
+    transition: 0.2s;
+}
+
+.thoughts > .thoughts-form > .thoughts-inputs > button:hover {
+    border: 2px solid black;
 }

@@ -1,6 +1,10 @@
+:root {
+    --thought-background-color: bisque;
+}
+
 .thought {
     display: flex;
-    background-color: bisque;
+    background-color: var(--thought-background-color);
     width: 100%;
     padding: 0.75rem;
     border: 2px solid gray;
@@ -18,4 +22,13 @@
 
 .thought p {
     font-size: 14pt;
+}
+
+@keyframes expires {
+    from {
+        background-color: var(--thought-background-color);
+    }
+    to {
+        background-color: gray;
+    }
 }

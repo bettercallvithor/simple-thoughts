@@ -4,15 +4,16 @@ import '@/components/Thoughts/Thought.css';
 interface ThoughtProps {
     thought: ThoughtModel,
     onDelete: (thoughtId: number) => void,
+    expiresIn?: number
 };
 
-function Thought({ thought, onDelete }: ThoughtProps) {
+function Thought({ thought, onDelete, expiresIn }: ThoughtProps) {
     const handleDelete = () => {
         onDelete(thought.id);
     };
 
     return (
-        <div className="thought">
+        <div className="thought" style={{ animation: expiresIn ? `expires ${expiresIn}ms ease-in` : undefined }}>
             <p>{thought.content}</p>
 
             <button className="thought-delete-button" onClick={handleDelete}>&times;</button>

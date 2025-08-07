@@ -3,16 +3,15 @@ import ThoughtModel from '@/components/Thoughts/Models/thought';
 import Thought from '@/components/Thoughts/Thought';
 import '@/components/Thoughts/Thoughts.css';
 
+const THOUGHT_TIMEOUT = 60000; // 1 minute
+
 let currentId = 1;
 function generateId(): number {
     return currentId++;
 }
 
 function Thoughts() {
-    const [thoughts, setThoughts] = useState<ThoughtModel[]>([
-            { id: generateId(), content: 'Hello my friend', createdAt: new Date() },
-            { id: generateId(), content: 'Please, add your thoughts here!', createdAt: new Date() },
-        ]);
+    const [thoughts, setThoughts] = useState<ThoughtModel[]>([]);
     const [thought, setThought] = useState<string>('');
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -24,6 +23,12 @@ function Thoughts() {
             content: thought,
             createdAt: new Date(),
         };
+
+        // Automatically delete after THOUGHT_TIMEOUT miliseconds
+        const timeoutId = setTimeout(() => {
+            handleDelete(newThought.id);
+            clearTimeout(timeoutId);
+        }, THOUGHT_TIMEOUT);
 
         setThoughts(prev => [newThought, ...prev]);
         setThought('');
@@ -38,7 +43,7 @@ function Thoughts() {
     };
 
     return (
-        <div>
+        <div className="thoughts">
             <form className="thoughts-form" onSubmit={handleSubmit}>
                 <h1>Add some temporary thoughts</h1>
 
@@ -49,8 +54,8 @@ function Thoughts() {
             </form>
 
             <div className='thoughts-list'>
-                {thoughts.map((t, i) => {
-                    return <Thought key={"thought_" + i} thought={t} onDelete={handleDelete} />
+                {thoughts.map(t => { 
+                    return <Thought key={t.id} thought={t} onDelete={handleDelete} expiresIn={THOUGHT_TIMEOUT} />
                 })}
             </div>
         </div>
