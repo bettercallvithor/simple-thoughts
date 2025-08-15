@@ -1,0 +1,6 @@
+@SimpleThoughts_HostAddress = http://localhost:5051
+
+GET {{SimpleThoughts_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
