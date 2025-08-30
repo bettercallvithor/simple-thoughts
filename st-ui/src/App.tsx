@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import Thoughts from '@/components/Thoughts/Thoughts'
 import CentralizedContainer from './components/CentralizedContainer/CentralizedContainer'
+import ThoughtsFactory from './components/Thoughts/factories/ThoughtsBuilder'
 
 function App() {
   useEffect(() => {
@@ -9,7 +9,7 @@ function App() {
 
   return (
     <CentralizedContainer>
-      <Thoughts />
+      <ThoughtsFactory />
     </CentralizedContainer>
   )
 }

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ThoughtModel from '@/components/Thoughts/Models/thought';
 import Thought from '@/components/Thoughts/Thought';
 import '@/components/Thoughts/Thoughts.css';
+import type SocketContext from '@/contexts/socketContext';
 
 const THOUGHT_TIMEOUT = 60000; // 1 minute
 
@@ -10,25 +11,43 @@ function generateId(): number {
     return currentId++;
 }
 
-function Thoughts() {
+function createThoughtModel(content: string, isSelf: boolean): ThoughtModel {
+    return {
+        id: generateId(),
+        content,
+        createdAt: new Date(),
+        isSelf,
+    } as ThoughtModel;
+}
+
+interface ThoughtsProps {
+    socketContext: SocketContext;
+}
+
+function Thoughts({ socketContext }: ThoughtsProps) {
     const [thoughts, setThoughts] = useState<ThoughtModel[]>([]);
     const [thought, setThought] = useState<string>('');
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    useEffect(() => {
+        const methodName = "ReceiveThought";
+        socketContext.listenTo<string>(methodName, (thought: string) => {
+            setThoughts(prev => [createThoughtModel(thought, false), ...prev]);
+        });
+    }, []);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (thought.trim() === '') return;
 
-        const newThought: ThoughtModel = {
-            id: generateId(),
-            content: thought,
-            createdAt: new Date(),
-        };
+        const newThought = createThoughtModel(thought, true);
 
         // Automatically delete after THOUGHT_TIMEOUT miliseconds
         const timeoutId = setTimeout(() => {
             handleDelete(newThought.id);
             clearTimeout(timeoutId);
         }, THOUGHT_TIMEOUT);
+
+        await socketContext.sendMessage<string>('SendThought', newThought.content);
 
         setThoughts(prev => [newThought, ...prev]);
         setThought('');
